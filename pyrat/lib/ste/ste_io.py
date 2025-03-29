@@ -394,7 +394,7 @@ class RatFile():
             self.Header.Rat.rattype = ctypes.c_int(kwargs['rattype'])
 
         # calculate the needed size of an empty file
-        n_bytes = reduce(lambda x, y: x * y, self.shape) * self.dtype.itemsize
+        n_bytes = 1000 + np.prod(self.shape) * self.dtype.itemsize
 
         # write the Header and truncate the file
         with open(self.filename, 'wb') as lun:
@@ -532,8 +532,7 @@ class RatFile():
             self.Header.Rat.ndim = ctypes.c_int(len(self.shape))
             self.Header.Rat.nchannel = ctypes.c_int(int(np.prod(self.shape[2:])))
 
-            n_bytes_total = (
-            1000 + reduce(lambda x, y: x * y, self.shape) * self.dtype.itemsize)
+            n_bytes_total = 1000 + np.prod(self.shape) * self.dtype.itemsize
 
             with open(self.filename, 'wb') as lun:
                 lun.write(self.Header)
@@ -664,7 +663,7 @@ class RatFile():
             self._ioerror('The shape specified in the header %s and the shape of '
                           'the array %s don\'t correspond to each other!' % (str(self.shape[1:]),str(arr.shape[1:])))
 
-        n_bytes_total = 1000 + reduce(lambda x, y: x * y, self.shape) * arr.itemsize
+        n_bytes_total = 1000 + np.prod(self.shape) * self.dtype.itemsize
 
         with open(self.filename, 'r+b') as lun:
             lun.seek(0,2)
