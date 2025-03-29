@@ -394,7 +394,7 @@ class RatFile():
             self.Header.Rat.rattype = ctypes.c_int(kwargs['rattype'])
 
         # calculate the needed size of an empty file
-        n_bytes = 1000 + np.prod(self.shape) * self.dtype.itemsize
+        n_bytes = np.prod(self.shape) * self.dtype.itemsize
 
         # write the Header and truncate the file
         with open(self.filename, 'wb') as lun:
